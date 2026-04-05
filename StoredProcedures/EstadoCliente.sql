@@ -1,0 +1,82 @@
+-- TABLA: EstadoCliente
+
+-- 1) SP INSERT
+GO
+CREATE OR ALTER PROCEDURE spInsertEstadoCliente
+    @Nombre VARCHAR(50),
+    @Mensaje VARCHAR(200) OUTPUT
+AS
+BEGIN
+    IF EXISTS (SELECT 1 FROM EstadoCliente WHERE Nombre = @Nombre)
+        BEGIN
+            SET @Mensaje = 'El estado de cliente que intenta registrar ya existe en la base de datos';
+        END
+    ELSE
+        BEGIN
+            INSERT INTO EstadoCliente(Nombre)
+            VALUES (@Nombre);
+
+            SET @Mensaje = 'Registro insertado correctamente';
+        END
+END;
+
+-- 2) SP UPDATE
+GO
+CREATE OR ALTER PROCEDURE spUpdateEstadoCliente
+    @EstadoClienteId INT,
+    @Nombre VARCHAR(50),
+    @Mensaje VARCHAR(200) OUTPUT
+AS
+BEGIN
+    IF EXISTS (SELECT 1 FROM EstadoCliente WHERE Nombre = @Nombre AND EstadoClienteId <> @EstadoClienteId)
+        BEGIN
+            SET @Mensaje = 'El estado de cliente ya existe en la base de datos';
+        END
+    ELSE
+        BEGIN
+            UPDATE EstadoCliente
+            SET Nombre = @Nombre
+            WHERE EstadoClienteId = @EstadoClienteId;
+
+            SET @Mensaje = 'Registro actualizado correctamente';
+        END
+END;
+
+-- 3) SP DELETE
+GO
+CREATE OR ALTER PROCEDURE spDeleteEstadoCliente
+    @EstadoClienteId INT,
+    @Mensaje VARCHAR(200) OUTPUT
+AS
+BEGIN
+    DELETE FROM EstadoCliente
+    WHERE EstadoClienteId = @EstadoClienteId;
+
+    SET @Mensaje = 'Registro eliminado correctamente';
+END;
+
+-- 4) SP SELECT ALL
+GO
+CREATE OR ALTER PROCEDURE spSelectAllEstadoCliente
+AS
+BEGIN
+    SELECT 
+        EstadoClienteId AS 'Codigo',
+        Nombre AS 'Nombre'
+    FROM EstadoCliente
+    ORDER BY Nombre ASC;
+END;
+
+-- 5) SP SEARCH BY
+GO
+CREATE OR ALTER PROCEDURE spBusquedaEstadoCliente
+    @busqueda VARCHAR(200)
+AS
+BEGIN
+    SELECT
+        EstadoClienteId AS 'Codigo',
+        Nombre AS 'Nombre'
+    FROM EstadoCliente
+    WHERE Nombre LIKE '%' + @busqueda + '%'
+    ORDER BY Nombre ASC;
+END;

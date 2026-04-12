@@ -6,81 +6,35 @@ CREATE OR ALTER PROCEDURE spInsertVehiculo
     @ClienteId INT,
     @Placa VARCHAR(20),
     @TipoVehiculoId INT,
-    @EstadoVehiculoId INT = 1,
-    @Mensaje VARCHAR(200) OUTPUT
+    @EstadoVehiculoId INT = 1
 AS
 BEGIN
-    -- Validaciones críticas
-    IF NOT EXISTS (SELECT 1 FROM Cliente WHERE ClienteId = @ClienteId)
-        BEGIN
-            SET @Mensaje = 'El cliente no existe';
-            RETURN;
-        END
-
-    IF NOT EXISTS (SELECT 1 FROM TipoVehiculo WHERE TipoVehiculoId = @TipoVehiculoId)
-        BEGIN
-            SET @Mensaje = 'El tipo de vehiculo no existe';
-            RETURN;
-        END
-
-    IF NOT EXISTS (SELECT 1 FROM EstadoVehiculo WHERE EstadoVehiculoId = @EstadoVehiculoId)
-        BEGIN
-            SET @Mensaje = 'El estado de vehiculo no existe';
-            RETURN;
-        END
-
     IF EXISTS (SELECT 1 FROM Vehiculo WHERE Placa = @Placa)
         BEGIN
-            SET @Mensaje = 'El vehiculo que intenta registrar ya existe en la base de datos';
+            PRINT 'El vehiculo que intenta registrar ya existe en la base de datos';
         END
     ELSE
         BEGIN
             INSERT INTO Vehiculo(ClienteId, Placa, TipoVehiculoId, EstadoVehiculoId)
             VALUES (@ClienteId, @Placa, @TipoVehiculoId, @EstadoVehiculoId);
 
-            SET @Mensaje = 'Registro insertado correctamente';
+            PRINT 'Registro insertado correctamente';
         END
 END;
 
 -- 2) SP UPDATE
 GO
 CREATE OR ALTER PROCEDURE spUpdateVehiculo
-    @Id INT,
+    @VehiculoId INT,
     @ClienteId INT,
     @Placa VARCHAR(20),
     @TipoVehiculoId INT,
-    @EstadoVehiculoId INT,
-    @Mensaje VARCHAR(200) OUTPUT
+    @EstadoVehiculoId INT
 AS
 BEGIN
-    -- Validaciones críticas
-    IF NOT EXISTS (SELECT 1 FROM Vehiculo WHERE VehiculoId = @Id)
+    IF EXISTS (SELECT 1 FROM Vehiculo WHERE Placa = @Placa AND VehiculoId <> @VehiculoId)
         BEGIN
-            SET @Mensaje = 'El vehiculo que intenta actualizar no existe';
-            RETURN;
-        END
-
-    IF NOT EXISTS (SELECT 1 FROM Cliente WHERE ClienteId = @ClienteId)
-        BEGIN
-            SET @Mensaje = 'El cliente no existe';
-            RETURN;
-        END
-
-    IF NOT EXISTS (SELECT 1 FROM TipoVehiculo WHERE TipoVehiculoId = @TipoVehiculoId)
-        BEGIN
-            SET @Mensaje = 'El tipo de vehiculo no existe';
-            RETURN;
-        END
-
-    IF NOT EXISTS (SELECT 1 FROM EstadoVehiculo WHERE EstadoVehiculoId = @EstadoVehiculoId)
-        BEGIN
-            SET @Mensaje = 'El estado de vehiculo no existe';
-            RETURN;
-        END
-
-    IF EXISTS (SELECT 1 FROM Vehiculo WHERE Placa = @Placa AND VehiculoId <> @Id)
-        BEGIN
-            SET @Mensaje = 'La placa ya existe en la base de datos';
+            PRINT 'La placa ya existe en la base de datos';
         END
     ELSE
         BEGIN
@@ -89,30 +43,29 @@ BEGIN
                 Placa = @Placa,
                 TipoVehiculoId = @TipoVehiculoId,
                 EstadoVehiculoId = @EstadoVehiculoId
-            WHERE VehiculoId = @Id;
+            WHERE VehiculoId = @VehiculoId;
 
-            SET @Mensaje = 'Registro actualizado correctamente';
+            PRINT 'Registro actualizado correctamente';
         END
 END;
 
 -- 3) SP DELETE (lógica)
 GO
 CREATE OR ALTER PROCEDURE spDeleteVehiculo
-    @Id INT,
-    @Mensaje VARCHAR(200) OUTPUT
+    @VehiculoId INT
 AS
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM Vehiculo WHERE VehiculoId = @Id)
+    IF NOT EXISTS (SELECT 1 FROM Vehiculo WHERE VehiculoId = @VehiculoId)
         BEGIN
-            SET @Mensaje = 'El vehiculo que intenta eliminar no existe';
+            PRINT 'El vehiculo que intenta eliminar no existe';
             RETURN;
         END
 
     UPDATE Vehiculo
     SET EstadoVehiculoId = 2
-    WHERE VehiculoId = @Id;
+    WHERE VehiculoId = @VehiculoId;
 
-    SET @Mensaje = 'Vehiculo eliminado correctamente';
+    PRINT 'Vehiculo eliminado correctamente';
 END;
 
 -- 4) SP SELECT ALL

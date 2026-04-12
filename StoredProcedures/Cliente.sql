@@ -11,60 +11,26 @@ CREATE OR ALTER PROCEDURE spInsertCliente
     @CarnetExtranjero VARCHAR(20),
     @TarjetaId INT,
     @TipoClienteId INT,
-    @EstadoClienteId INT = 1,
-    @Mensaje VARCHAR(200) OUTPUT
+    @EstadoClienteId INT = 1
 AS
 BEGIN
-    -- Validaciones críticas
-    IF NOT EXISTS (SELECT 1 FROM Tarjeta WHERE TarjetaId = @TarjetaId)
-        BEGIN
-            SET @Mensaje = 'La tarjeta seleccionada no existe';
-            RETURN;
-        END
-
-    IF NOT EXISTS (SELECT 1 FROM TipoCliente WHERE TipoClienteId = @TipoClienteId)
-        BEGIN
-            SET @Mensaje = 'El tipo de cliente no existe';
-            RETURN;
-        END
-
-    IF NOT EXISTS (SELECT 1 FROM EstadoCliente WHERE EstadoClienteId = @EstadoClienteId)
-        BEGIN
-            SET @Mensaje = 'El estado de cliente no existe';
-            RETURN;
-        END
-
-    -- Validación tipo documento
-    IF @TipoDocumento = 'DUI' AND @DUI IS NULL
-        BEGIN
-            SET @Mensaje = 'Debe ingresar un DUI';
-            RETURN;
-        END
-
-    IF @TipoDocumento = 'CR' AND @CarnetExtranjero IS NULL
-        BEGIN
-            SET @Mensaje = 'Debe ingresar un carnet de residente';
-            RETURN;
-        END
-
-    -- Validación original
     IF EXISTS (SELECT 1 FROM Cliente WHERE DUI = @DUI)
         BEGIN
-            SET @Mensaje = 'El cliente que intenta registrar ya existe en la base de datos';
+            PRINT 'El cliente que intenta registrar ya existe en la base de datos';
         END
     ELSE
         BEGIN
             INSERT INTO Cliente(Nombre, Apellido, Telefono, TipoDocumento, DUI, CarnetExtranjero, TarjetaId, TipoClienteId, EstadoClienteId)
             VALUES (@Nombre, @Apellido, @Telefono, @TipoDocumento, @DUI, @CarnetExtranjero, @TarjetaId, @TipoClienteId, @EstadoClienteId);
 
-            SET @Mensaje = 'Registro insertado correctamente';
+            PRINT 'Registro insertado correctamente';
         END
 END;
+GO
 
 -- 2) SP UPDATE
-GO
 CREATE OR ALTER PROCEDURE spUpdateCliente
-    @Id INT,
+    @ClienteId INT,
     @Nombre VARCHAR(50),
     @Apellido VARCHAR(50),
     @Telefono VARCHAR(20),
@@ -73,39 +39,12 @@ CREATE OR ALTER PROCEDURE spUpdateCliente
     @CarnetExtranjero VARCHAR(20),
     @TarjetaId INT,
     @TipoClienteId INT,
-    @EstadoClienteId INT,
-    @Mensaje VARCHAR(200) OUTPUT
+    @EstadoClienteId INT
 AS
 BEGIN
-    -- Validaciones críticas
-    IF NOT EXISTS (SELECT 1 FROM Cliente WHERE ClienteId = @Id)
+    IF EXISTS (SELECT 1 FROM Cliente WHERE DUI = @DUI AND ClienteId <> @ClienteId)
         BEGIN
-            SET @Mensaje = 'El cliente que intenta actualizar no existe';
-            RETURN;
-        END
-
-    IF NOT EXISTS (SELECT 1 FROM Tarjeta WHERE TarjetaId = @TarjetaId)
-        BEGIN
-            SET @Mensaje = 'La tarjeta seleccionada no existe';
-            RETURN;
-        END
-
-    IF NOT EXISTS (SELECT 1 FROM TipoCliente WHERE TipoClienteId = @TipoClienteId)
-        BEGIN
-            SET @Mensaje = 'El tipo de cliente no existe';
-            RETURN;
-        END
-
-    IF NOT EXISTS (SELECT 1 FROM EstadoCliente WHERE EstadoClienteId = @EstadoClienteId)
-        BEGIN
-            SET @Mensaje = 'El estado de cliente no existe';
-            RETURN;
-        END
-
-    -- Validación original
-    IF EXISTS (SELECT 1 FROM Cliente WHERE DUI = @DUI AND ClienteId <> @Id)
-        BEGIN
-            SET @Mensaje = 'El DUI ya existe en la base de datos';
+            PRINT 'El DUI ya existe en la base de datos';
         END
     ELSE
         BEGIN
@@ -119,34 +58,27 @@ BEGIN
                 TarjetaId = @TarjetaId,
                 TipoClienteId = @TipoClienteId,
                 EstadoClienteId = @EstadoClienteId
-            WHERE ClienteId = @Id;
+            WHERE ClienteId = @ClienteId;
 
-            SET @Mensaje = 'Registro actualizado correctamente';
+            PRINT 'Registro actualizado correctamente';
         END
 END;
+GO
 
 -- 3) SP DELETE (lógica)
-GO
 CREATE OR ALTER PROCEDURE spDeleteCliente
-    @Id INT,
-    @Mensaje VARCHAR(200) OUTPUT
+    @ClienteId INT
 AS
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM Cliente WHERE ClienteId = @Id)
-        BEGIN
-            SET @Mensaje = 'El cliente que intenta eliminar no existe';
-            RETURN;
-        END
-
     UPDATE Cliente
     SET EstadoClienteId = 2
-    WHERE ClienteId = @Id;
+    WHERE ClienteId = @ClienteId;
 
-    SET @Mensaje = 'Cliente eliminado correctamente';
+    PRINT 'Cliente eliminado correctamente';
 END;
+GO
 
 -- 4) SP SELECT ALL
-GO
 CREATE OR ALTER PROCEDURE spSelectAllCliente
 AS
 BEGIN
@@ -167,9 +99,9 @@ BEGIN
     WHERE c.EstadoClienteId = 1
     ORDER BY c.Nombre ASC;
 END;
+GO
 
 -- 5) SP SEARCH BY
-GO
 CREATE OR ALTER PROCEDURE spBusquedaCliente
     @busqueda VARCHAR(200)
 AS
@@ -194,3 +126,4 @@ BEGIN
        OR c.DUI LIKE '%' + @busqueda + '%')
     ORDER BY c.Nombre ASC;
 END;
+GO

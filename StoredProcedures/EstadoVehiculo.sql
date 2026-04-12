@@ -3,20 +3,19 @@
 -- 1) SP INSERT
 GO
 CREATE OR ALTER PROCEDURE spInsertEstadoVehiculo
-    @Nombre VARCHAR(50),
-    @Mensaje VARCHAR(200) OUTPUT
+    @Nombre VARCHAR(50)
 AS
 BEGIN
     IF EXISTS (SELECT 1 FROM EstadoVehiculo WHERE Nombre = @Nombre)
         BEGIN
-            SET @Mensaje = 'El estado de vehiculo que intenta registrar ya existe en la base de datos';
+            PRINT 'El estado de vehiculo que intenta registrar ya existe en la base de datos';
         END
     ELSE
         BEGIN
             INSERT INTO EstadoVehiculo(Nombre)
             VALUES (@Nombre);
 
-            SET @Mensaje = 'Registro insertado correctamente';
+            PRINT 'Registro insertado correctamente';
         END
 END;
 
@@ -24,13 +23,12 @@ END;
 GO
 CREATE OR ALTER PROCEDURE spUpdateEstadoVehiculo
     @EstadoVehiculoId INT,
-    @Nombre VARCHAR(50),
-    @Mensaje VARCHAR(200) OUTPUT
+    @Nombre VARCHAR(50)
 AS
 BEGIN
     IF EXISTS (SELECT 1 FROM EstadoVehiculo WHERE Nombre = @Nombre AND EstadoVehiculoId <> @EstadoVehiculoId)
         BEGIN
-            SET @Mensaje = 'El estado de vehiculo ya existe en la base de datos';
+            PRINT 'El estado de vehiculo ya existe en la base de datos';
         END
     ELSE
         BEGIN
@@ -38,21 +36,20 @@ BEGIN
             SET Nombre = @Nombre
             WHERE EstadoVehiculoId = @EstadoVehiculoId;
 
-            SET @Mensaje = 'Registro actualizado correctamente';
+            PRINT 'Registro actualizado correctamente';
         END
 END;
 
 -- 3) SP DELETE
 GO
 CREATE OR ALTER PROCEDURE spDeleteEstadoVehiculo
-    @EstadoVehiculoId INT,
-    @Mensaje VARCHAR(200) OUTPUT
+    @EstadoVehiculoId INT
 AS
 BEGIN
     DELETE FROM EstadoVehiculo
     WHERE EstadoVehiculoId = @EstadoVehiculoId;
 
-    SET @Mensaje = 'Registro eliminado correctamente';
+    PRINT 'Registro eliminado correctamente';
 END;
 
 -- 4) SP SELECT ALL

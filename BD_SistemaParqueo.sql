@@ -86,7 +86,7 @@ CREATE TABLE Cliente (
     ClienteId INT PRIMARY KEY IDENTITY,
     Nombre VARCHAR(50) NOT NULL,
     Apellido VARCHAR(50) NOT NULL,
-    Telefono VARCHAR(20),
+    Telefono VARCHAR(20) NULL,
     TipoDocumento VARCHAR(20) NOT NULL CHECK (TipoDocumento IN ('DUI', 'CR')), 
     DUI VARCHAR(9) NULL UNIQUE,
     CarnetExtranjero VARCHAR(20) NULL UNIQUE,
@@ -113,7 +113,7 @@ CREATE TABLE Parqueo (
 CREATE TABLE EstadoVehiculo (
     EstadoVehiculoId INT PRIMARY KEY IDENTITY,
     Nombre VARCHAR(50) NOT NULL UNIQUE
-); -- NUEVA (ADD ENTITY)
+);
 
 CREATE TABLE Vehiculo (
     VehiculoId INT PRIMARY KEY IDENTITY,
@@ -143,7 +143,7 @@ CREATE TABLE CorteCaja (
 
 CREATE TABLE MultaTicket (
     MultaId INT PRIMARY KEY IDENTITY,
-    Concepto VARCHAR(100) NOT NULL,
+    Concepto VARCHAR(100) NOT NULL UNIQUE,
     Precio DECIMAL(10,2) NOT NULL CHECK (Precio > 0)
 );
 
@@ -159,7 +159,7 @@ CREATE TABLE Ticket (
     HoraSalida TIME NULL,
     Total DECIMAL(10,2) NULL CHECK (Total >= 0),
     TarjetaId INT NOT NULL,
-    CorteId INT NULL,
+    CorteId INT NOT NULL,
     EstadoTicketId INT NOT NULL DEFAULT 1,
     UsuarioId INT NOT NULL,
     MultaId INT NULL,

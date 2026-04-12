@@ -3,19 +3,18 @@
 -- 1) SP INSERT
 GO
 CREATE OR ALTER PROCEDURE spInsertRol
-    @Nombre VARCHAR(50),
-    @Mensaje VARCHAR(200) OUTPUT
+    @Nombre VARCHAR(50)
 AS
 BEGIN
     IF EXISTS (SELECT 1 FROM Rol WHERE Nombre = @Nombre)
         BEGIN
-            SET @Mensaje = 'El Rol que intenta registrar ya existe en la base de datos';
+            PRINT 'El Rol que intenta registrar ya existe en la base de datos';
         END
     ELSE
         BEGIN
             INSERT INTO Rol(Nombre)
             VALUES (@Nombre);
-            SET @Mensaje = 'Registro insertado correctamente';
+            PRINT 'Registro insertado correctamente';
         END
 END;
 
@@ -23,13 +22,12 @@ END;
 GO
 CREATE OR ALTER PROCEDURE spUpdateRol
     @RolId INT,
-    @Nombre VARCHAR(50),
-    @Mensaje VARCHAR(200) OUTPUT
+    @Nombre VARCHAR(50)
 AS
 BEGIN
     IF EXISTS (SELECT 1 FROM Rol WHERE Nombre = @Nombre AND RolId <> @RolId)
         BEGIN
-            SET @Mensaje = 'El Rol ya existe en la base de datos';
+            PRINT 'El Rol ya existe en la base de datos';
         END
     ELSE
         BEGIN
@@ -37,21 +35,20 @@ BEGIN
             SET Nombre = @Nombre
             WHERE RolId = @RolId;
 
-            SET @Mensaje = 'Registro actualizado correctamente';
+            PRINT 'Registro actualizado correctamente';
         END
 END;
 
 -- 3) SP DELETE
 GO
 CREATE OR ALTER PROCEDURE spDeleteRol
-    @RolId INT,
-    @Mensaje VARCHAR(200) OUTPUT
+    @RolId INT
 AS
 BEGIN
     DELETE FROM Rol
     WHERE RolId = @RolId;
 
-    SET @Mensaje = 'Registro eliminado correctamente';
+    PRINT 'Registro eliminado correctamente';
 END;
 
 -- 4) SP SELECT ALL

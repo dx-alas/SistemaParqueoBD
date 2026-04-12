@@ -4,19 +4,19 @@
 GO
 CREATE OR ALTER PROCEDURE spInsertTipoVehiculo
     @Nombre VARCHAR(50),
-    @Precio DECIMAL(10,2),
-    @Mensaje VARCHAR(200) OUTPUT
+    @Precio DECIMAL(10,2)
 AS
 BEGIN
     IF EXISTS (SELECT 1 FROM TipoVehiculo WHERE Nombre = @Nombre)
         BEGIN
-            SET @Mensaje = 'El tipo de vehiculo ya existe en la base de datos';
+            PRINT 'El tipo de vehiculo ya existe en la base de datos';
         END
     ELSE
         BEGIN
             INSERT INTO TipoVehiculo(Nombre, Precio)
             VALUES(@Nombre, @Precio);
-            SET @Mensaje = 'Registro insertado correctamente';
+            
+            PRINT 'Registro insertado correctamente';
         END
 END;
 
@@ -25,13 +25,12 @@ GO
 CREATE OR ALTER PROCEDURE spUpdateTipoVehiculo
     @TipoVehiculoId INT,
     @Nombre VARCHAR(50),
-    @Precio DECIMAL(10,2),
-    @Mensaje VARCHAR(200) OUTPUT
+    @Precio DECIMAL(10,2)
 AS
 BEGIN
     IF EXISTS (SELECT 1 FROM TipoVehiculo WHERE Nombre = @Nombre AND TipoVehiculoId <> @TipoVehiculoId)
         BEGIN
-            SET @Mensaje = 'El Tipo de vehiculo ya existe en la base de datos';
+            PRINT 'El Tipo de vehiculo ya existe en la base de datos';
         END
     ELSE
         BEGIN
@@ -40,21 +39,20 @@ BEGIN
                 Precio = @Precio
             WHERE TipoVehiculoId = @TipoVehiculoId;
 
-            SET @Mensaje = 'Registro actualizado correctamente';
+            PRINT 'Registro actualizado correctamente';
         END
 END;
 
 -- 3) SP DELETE
 GO
 CREATE OR ALTER PROCEDURE spDeleteTipoVehiculo
-    @TipoVehiculoId INT,
-    @Mensaje VARCHAR(200) OUTPUT
+    @TipoVehiculoId INT
 AS
 BEGIN
     DELETE FROM TipoVehiculo
     WHERE TipoVehiculoId = @TipoVehiculoId;
 
-    SET @Mensaje = 'Registro eliminado correctamente';
+    PRINT 'Registro eliminado correctamente';
 END;
 
 -- 4) SP SELECT ALL

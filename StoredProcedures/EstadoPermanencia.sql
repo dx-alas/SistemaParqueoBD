@@ -3,68 +3,53 @@
 -- 1) SP INSERT
 GO
 CREATE OR ALTER PROCEDURE spInsertEstadoPermanencia
-    @Estado VARCHAR(50),
-    @Mensaje VARCHAR(200) OUTPUT
+    @Estado VARCHAR(50)
 AS
 BEGIN
     IF EXISTS (SELECT 1 FROM EstadoPermanencia WHERE Estado = @Estado)
         BEGIN
-            SET @Mensaje = 'El estado de permanencia que intenta registrar ya existe en la base de datos';
+            PRINT 'El estado de permanencia que intenta registrar ya existe en la base de datos';
         END
     ELSE
         BEGIN
             INSERT INTO EstadoPermanencia(Estado)
             VALUES (@Estado);
 
-            SET @Mensaje = 'Registro insertado correctamente';
+            PRINT 'Registro insertado correctamente';
         END
 END;
 
 -- 2) SP UPDATE
 GO
 CREATE OR ALTER PROCEDURE spUpdateEstadoPermanencia
-    @Id INT,
-    @Estado VARCHAR(50),
-    @Mensaje VARCHAR(200) OUTPUT
+    @EstadoPermanenciaId INT,
+    @Estado VARCHAR(50)
 AS
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM EstadoPermanencia WHERE EstadoPermanenciaId = @Id)
+    IF EXISTS (SELECT 1 FROM EstadoPermanencia WHERE Estado = @Estado AND EstadoPermanenciaId <> @EstadoPermanenciaId)
         BEGIN
-            SET @Mensaje = 'El estado de permanencia que intenta actualizar no existe';
-            RETURN;
-        END
-
-    IF EXISTS (SELECT 1 FROM EstadoPermanencia WHERE Estado = @Estado AND EstadoPermanenciaId <> @Id)
-        BEGIN
-            SET @Mensaje = 'El estado de permanencia ya existe en la base de datos';
+            PRINT 'El estado de permanencia ya existe en la base de datos';
         END
     ELSE
         BEGIN
             UPDATE EstadoPermanencia
             SET Estado = @Estado
-            WHERE EstadoPermanenciaId = @Id;
+            WHERE EstadoPermanenciaId = @EstadoPermanenciaId;
 
-            SET @Mensaje = 'Registro actualizado correctamente';
+            PRINT 'Registro actualizado correctamente';
         END
 END;
 
 -- 3) SP DELETE
 GO
 CREATE OR ALTER PROCEDURE spDeleteEstadoPermanencia
-    @Id INT,
-    @Mensaje VARCHAR(200) OUTPUT
+    @EstadoPermanenciaId INT
 AS
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM EstadoPermanencia WHERE EstadoPermanenciaId = @Id)
-        BEGIN
-            SET @Mensaje = 'El estado de permanencia que intenta eliminar no existe';
-            RETURN;
-        END
-
     DELETE FROM EstadoPermanencia
-    WHERE EstadoPermanenciaId = @Id;
+    WHERE EstadoPermanenciaId = @EstadoPermanenciaId;
 
-    SET @Mensaje = 'Registro eliminado correctamente';
+    PRINT 'Registro eliminado correctamente';
 END;
 
 -- 4) SP SELECT ALL

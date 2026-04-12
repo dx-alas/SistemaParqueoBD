@@ -3,54 +3,39 @@
 -- 1) SP INSERT
 GO
 CREATE OR ALTER PROCEDURE spInsertParqueo
-    @CapacidadTotal INT,
-    @Mensaje VARCHAR(200) OUTPUT
+    @CapacidadTotal INT
 AS
 BEGIN
     INSERT INTO Parqueo(CapacidadTotal)
     VALUES (@CapacidadTotal);
 
-    SET @Mensaje = 'Registro insertado correctamente';
+    PRINT 'Registro insertado correctamente';
 END;
 
 -- 2) SP UPDATE
 GO
 CREATE OR ALTER PROCEDURE spUpdateParqueo
-    @Id INT,
-    @CapacidadTotal INT,
-    @Mensaje VARCHAR(200) OUTPUT
+    @ParqueoId INT,
+    @CapacidadTotal INT
 AS
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM Parqueo WHERE ParqueoId = @Id)
-        BEGIN
-            SET @Mensaje = 'El parqueo que intenta actualizar no existe';
-            RETURN;
-        END
-
     UPDATE Parqueo
     SET CapacidadTotal = @CapacidadTotal
-    WHERE ParqueoId = @Id;
+    WHERE ParqueoId = @ParqueoId;
 
-    SET @Mensaje = 'Registro actualizado correctamente';
+    PRINT 'Registro actualizado correctamente';
 END;
 
 -- 3) SP DELETE
 GO
 CREATE OR ALTER PROCEDURE spDeleteParqueo
-    @Id INT,
-    @Mensaje VARCHAR(200) OUTPUT
+    @ParqueoId INT
 AS
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM Parqueo WHERE ParqueoId = @Id)
-        BEGIN
-            SET @Mensaje = 'El parqueo que intenta eliminar no existe';
-            RETURN;
-        END
-
     DELETE FROM Parqueo
-    WHERE ParqueoId = @Id;
+    WHERE ParqueoId = @ParqueoId;
 
-    SET @Mensaje = 'Registro eliminado correctamente';
+    PRINT 'Registro eliminado correctamente';
 END;
 
 -- 4) SP SELECT ALL

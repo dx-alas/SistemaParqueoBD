@@ -9,56 +9,29 @@ CREATE OR ALTER PROCEDURE spInsertTicket
     @UsuarioId INT,
     @EstadoTicketId INT,
     @EstadoPermanenciaId INT,
-    @MultaId INT = NULL,
-    @Mensaje VARCHAR(200) OUTPUT
+    @MultaId INT = NULL
 AS
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM Tarjeta WHERE TarjetaId = @TarjetaId)
-        BEGIN
-            SET @Mensaje = 'La tarjeta no existe';
-            RETURN;
-        END
-
-    IF NOT EXISTS (SELECT 1 FROM Usuario WHERE UsuarioId = @UsuarioId)
-        BEGIN
-            SET @Mensaje = 'El usuario no existe';
-            RETURN;
-        END
-
     INSERT INTO Ticket
         (Fecha, HoraEntrada, TarjetaId, UsuarioId, EstadoTicketId, EstadoPermanenciaId, MultaId)
     VALUES 
         (@Fecha, @HoraEntrada, @TarjetaId, @UsuarioId, @EstadoTicketId, @EstadoPermanenciaId, @MultaId);
 
-    SET @Mensaje = 'Registro insertado correctamente';
+    PRINT 'Registro insertado correctamente';
 END;
 
 -- 2) SP UPDATE
 GO
 CREATE OR ALTER PROCEDURE spUpdateTicket
-    @Id INT,
+    @TicketId INT,
     @HoraSalida TIME,
     @Total DECIMAL(10,2),
     @CorteId INT,
     @EstadoTicketId INT,
     @MultaId INT,
-    @EstadoPermanenciaId INT,
-    @Mensaje VARCHAR(200) OUTPUT
+    @EstadoPermanenciaId INT
 AS
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM Ticket WHERE TicketId = @Id)
-        BEGIN
-            SET @Mensaje = 'El ticket no existe';
-            RETURN;
-        END
-
-    IF @CorteId IS NOT NULL
-        IF NOT EXISTS (SELECT 1 FROM CorteCaja WHERE CorteId = @CorteId)
-            BEGIN
-                SET @Mensaje = 'El corte de caja no existe';
-                RETURN;
-            END
-
     UPDATE Ticket
     SET HoraSalida = @HoraSalida,
         Total = @Total,
@@ -66,19 +39,18 @@ BEGIN
         EstadoTicketId = @EstadoTicketId,
         MultaId = @MultaId,
         EstadoPermanenciaId = @EstadoPermanenciaId
-    WHERE TicketId = @Id;
+    WHERE TicketId = @TicketId;
 
-    SET @Mensaje = 'Registro actualizado correctamente';
+    PRINT 'Registro actualizado correctamente';
 END;
 
 -- 3) SP DELETE
 GO
 CREATE OR ALTER PROCEDURE spDeleteTicket
-    @Id INT,
-    @Mensaje VARCHAR(200) OUTPUT
+    @TicketId INT
 AS
 BEGIN
-    SET @Mensaje = 'No se permite eliminar tickets';
+    PRINT 'No se permite eliminar tickets';
 END;
 
 -- 4) SP SELECT ALL

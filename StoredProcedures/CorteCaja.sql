@@ -7,49 +7,29 @@ CREATE OR ALTER PROCEDURE spInsertCorteCaja
     @HoraInicio TIME,
     @MontoInicial DECIMAL(10,2),
     @ObservacionInicial VARCHAR(255),
-    @UsuarioAperturaId INT,
-    @Mensaje VARCHAR(200) OUTPUT
+    @UsuarioAperturaId INT
 AS
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM Usuario WHERE UsuarioId = @UsuarioAperturaId)
-        BEGIN
-            SET @Mensaje = 'El usuario de apertura no existe';
-            RETURN;
-        END
-
     INSERT INTO CorteCaja(Fecha, HoraInicio, MontoInicial, ObservacionInicial, UsuarioAperturaId)
     VALUES (@Fecha, @HoraInicio, @MontoInicial, @ObservacionInicial, @UsuarioAperturaId);
 
-    SET @Mensaje = 'Corte de caja abierto correctamente';
+    PRINT 'Corte de caja abierto correctamente';
 END;
+GO
 
 -- 2) SP UPDATE (CIERRE)
-GO
 CREATE OR ALTER PROCEDURE spUpdateCorteCaja
-    @Id INT,
+    @CorteId INT,
     @HoraEntrega TIME,
     @MontoTotal DECIMAL(10,2),
     @ObservacionFinal VARCHAR(255),
-    @UsuarioCierreId INT,
-    @Mensaje VARCHAR(200) OUTPUT
+    @UsuarioCierreId INT
 AS
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM CorteCaja WHERE CorteId = @Id)
-        BEGIN
-            SET @Mensaje = 'El corte de caja no existe';
-            RETURN;
-        END
-
-    IF NOT EXISTS (SELECT 1 FROM Usuario WHERE UsuarioId = @UsuarioCierreId)
-        BEGIN
-            SET @Mensaje = 'El usuario de cierre no existe';
-            RETURN;
-        END
-
     -- Validar que no esté ya cerrado
-    IF EXISTS (SELECT 1 FROM CorteCaja WHERE CorteId = @Id AND UsuarioCierreId IS NOT NULL)
+    IF EXISTS (SELECT 1 FROM CorteCaja WHERE CorteId = @CorteId AND UsuarioCierreId IS NOT NULL)
         BEGIN
-            SET @Mensaje = 'El corte de caja ya fue cerrado';
+            PRINT 'El corte de caja ya fue cerrado';
             RETURN;
         END
 
@@ -58,23 +38,22 @@ BEGIN
         MontoTotal = @MontoTotal,
         ObservacionFinal = @ObservacionFinal,
         UsuarioCierreId = @UsuarioCierreId
-    WHERE CorteId = @Id;
+    WHERE CorteId = @CorteId;
 
-    SET @Mensaje = 'Corte de caja cerrado correctamente';
+    PRINT 'Corte de caja cerrado correctamente';
 END;
+GO
 
 -- 3) SP DELETE
-GO
 CREATE OR ALTER PROCEDURE spDeleteCorteCaja
-    @Id INT,
-    @Mensaje VARCHAR(200) OUTPUT
+    @CorteId INT
 AS
 BEGIN
-    SET @Mensaje = 'No se permite eliminar cortes de caja';
+    PRINT 'No se permite eliminar cortes de caja';
 END;
+GO
 
 -- 4) SP SELECT ALL
-GO
 CREATE OR ALTER PROCEDURE spSelectAllCorteCaja
 AS
 BEGIN
@@ -94,9 +73,9 @@ BEGIN
     LEFT JOIN Usuario uc ON c.UsuarioCierreId = uc.UsuarioId
     ORDER BY c.Fecha DESC;
 END;
+GO
 
 -- 5) SP SEARCH BY
-GO
 CREATE OR ALTER PROCEDURE spBusquedaCorteCaja
     @busqueda VARCHAR(200)
 AS
@@ -118,3 +97,4 @@ BEGIN
     WHERE ua.Nombre LIKE '%' + @busqueda + '%'
     ORDER BY c.Fecha DESC;
 END;
+GO

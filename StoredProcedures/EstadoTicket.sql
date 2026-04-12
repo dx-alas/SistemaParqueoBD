@@ -56,23 +56,22 @@ GO
 CREATE OR ALTER PROCEDURE spSelectAllEstadoTicket
 AS
 BEGIN
-    SELECT 
-        EstadoTicketId AS 'Codigo',
-        Nombre AS 'Nombre'
+    SELECT
+        EstadoTicketId,
+        Nombre
     FROM EstadoTicket
     ORDER BY Nombre ASC;
 END;
 
 -- 5) SP SEARCH BY
 GO
-CREATE OR ALTER PROCEDURE spBusquedaEstadoTicket
-    @busqueda VARCHAR(200)
+CREATE OR ALTER PROCEDURE spSelectEstadoTicketById
+    @EstadoTicketId INT
 AS
 BEGIN
     SELECT
-        EstadoTicketId AS 'Codigo',
-        Nombre AS 'Nombre'
+        EstadoTicketId,
+        Nombre
     FROM EstadoTicket
-    WHERE Nombre LIKE '%' + @busqueda + '%'
-    ORDER BY Nombre ASC;
+    WHERE EstadoTicketId = @EstadoTicketId;
 END;

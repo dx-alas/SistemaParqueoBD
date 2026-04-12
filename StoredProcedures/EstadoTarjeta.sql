@@ -56,23 +56,22 @@ GO
 CREATE OR ALTER PROCEDURE spSelectAllEstadoTarjeta
 AS
 BEGIN
-    SELECT 
-        EstadoTarjetaId AS 'Codigo',
-        Nombre AS 'Nombre'
+    SELECT
+        EstadoTarjetaId,
+        Nombre
     FROM EstadoTarjeta
     ORDER BY Nombre ASC;
 END;
 
 -- 5) SP SEARCH BY
 GO
-CREATE OR ALTER PROCEDURE spBusquedaEstadoTarjeta
-    @busqueda VARCHAR(200)
+CREATE OR ALTER PROCEDURE spSelectEstadoTarjetaById
+    @EstadoTarjetaId INT
 AS
 BEGIN
     SELECT
-        EstadoTarjetaId AS 'Codigo',
-        Nombre AS 'Nombre'
+        EstadoTarjetaId,
+        Nombre
     FROM EstadoTarjeta
-    WHERE Nombre LIKE '%' + @busqueda + '%'
-    ORDER BY Nombre ASC;
+    WHERE EstadoTarjetaId = @EstadoTarjetaId;
 END;

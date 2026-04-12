@@ -58,7 +58,7 @@ CREATE OR ALTER PROCEDURE spSelectAllCorteCaja
 AS
 BEGIN
     SELECT
-        c.CorteId AS 'Codigo',
+        c.CorteId,
         c.Fecha,
         c.HoraInicio,
         c.HoraEntrega,
@@ -66,8 +66,8 @@ BEGIN
         c.MontoTotal,
         c.ObservacionInicial,
         c.ObservacionFinal,
-        ua.Nombre AS 'UsuarioApertura',
-        uc.Nombre AS 'UsuarioCierre'
+        ua.Nombre,
+        uc.Nombre
     FROM CorteCaja c
     INNER JOIN Usuario ua ON c.UsuarioAperturaId = ua.UsuarioId
     LEFT JOIN Usuario uc ON c.UsuarioCierreId = uc.UsuarioId
@@ -75,13 +75,14 @@ BEGIN
 END;
 GO
 
--- 5) SP SEARCH BY
-CREATE OR ALTER PROCEDURE spBusquedaCorteCaja
-    @busqueda VARCHAR(200)
+-- 5) SP SELECT BY ID
+GO
+CREATE OR ALTER PROCEDURE spSelectCorteCajaById
+    @CorteId INT
 AS
 BEGIN
     SELECT
-        c.CorteId AS 'Codigo',
+        c.CorteId,
         c.Fecha,
         c.HoraInicio,
         c.HoraEntrega,
@@ -89,12 +90,11 @@ BEGIN
         c.MontoTotal,
         c.ObservacionInicial,
         c.ObservacionFinal,
-        ua.Nombre AS 'UsuarioApertura',
-        uc.Nombre AS 'UsuarioCierre'
+        ua.Nombre,
+        uc.Nombre
     FROM CorteCaja c
     INNER JOIN Usuario ua ON c.UsuarioAperturaId = ua.UsuarioId
     LEFT JOIN Usuario uc ON c.UsuarioCierreId = uc.UsuarioId
-    WHERE ua.Nombre LIKE '%' + @busqueda + '%'
-    ORDER BY c.Fecha DESC;
+    WHERE c.CorteId = @CorteId;
 END;
 GO

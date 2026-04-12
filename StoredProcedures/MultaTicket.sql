@@ -47,7 +47,7 @@ CREATE OR ALTER PROCEDURE spSelectAllMultaTicket
 AS
 BEGIN
     SELECT
-        MultaId AS 'Codigo',
+        MultaId,
         Concepto,
         Precio
     FROM MultaTicket;
@@ -55,14 +55,14 @@ END;
 
 -- 5) SP SEARCH BY
 GO
-CREATE OR ALTER PROCEDURE spBusquedaMultaTicket
-    @busqueda VARCHAR(200)
+CREATE OR ALTER PROCEDURE spSelectMultaTicketById
+    @MultaId INT
 AS
 BEGIN
     SELECT
-        MultaId AS 'Codigo',
+        MultaId,
         Concepto,
         Precio
     FROM MultaTicket
-    WHERE Concepto LIKE '%' + @busqueda + '%';
+    WHERE MultaId = @MultaId;
 END;

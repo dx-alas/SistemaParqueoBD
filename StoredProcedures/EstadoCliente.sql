@@ -58,22 +58,21 @@ CREATE OR ALTER PROCEDURE spSelectAllEstadoCliente
 AS
 BEGIN
     SELECT 
-        EstadoClienteId AS 'Codigo',
-        Nombre AS 'Nombre'
+        EstadoClienteId,
+        Nombre
     FROM EstadoCliente
     ORDER BY Nombre ASC;
 END;
 
 -- 5) SP SEARCH BY
 GO
-CREATE OR ALTER PROCEDURE spBusquedaEstadoCliente
-    @busqueda VARCHAR(200)
+CREATE OR ALTER PROCEDURE spSelectEstadoClienteById
+    @EstadoClienteId INT
 AS
 BEGIN
     SELECT
-        EstadoClienteId AS 'Codigo',
-        Nombre AS 'Nombre'
+        EstadoClienteId,
+        Nombre
     FROM EstadoCliente
-    WHERE Nombre LIKE '%' + @busqueda + '%'
-    ORDER BY Nombre ASC;
+    WHERE EstadoClienteId = @EstadoClienteId;
 END;

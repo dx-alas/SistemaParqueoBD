@@ -56,23 +56,22 @@ GO
 CREATE OR ALTER PROCEDURE spSelectAllRol
 AS
 BEGIN
-    SELECT 
-        RolId AS 'Codigo',
-        Nombre AS 'Nombre'
+    SELECT
+        RolId,
+        Nombre
     FROM Rol
     ORDER BY Nombre ASC;
 END;
 
 -- 5) SP SEARCH BY
 GO
-CREATE OR ALTER PROCEDURE spBusquedaRol
-    @Nombre VARCHAR(200)
+CREATE OR ALTER PROCEDURE spSelectRolById
+    @RolId INT
 AS
 BEGIN
     SELECT
-        RolId AS 'Codigo',
-        Nombre AS 'Nombre'
+        RolId,
+        Nombre
     FROM Rol
-    WHERE Nombre LIKE '%' + @Nombre + '%'
-    ORDER BY Nombre ASC;
+    WHERE RolId = @RolId;
 END;

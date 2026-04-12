@@ -77,27 +77,7 @@ CREATE OR ALTER PROCEDURE spSelectAllEmpleado
 AS
 BEGIN
     SELECT
-        EmpleadoId AS 'Codigo',
-        Nombre,
-        Apellido,
-        DUI,
-        Correo,
-        Telefono,
-        Direccion,
-        EstadoEmpleadoId
-    FROM Empleado
-    WHERE EstadoEmpleadoId = 1 -- Solo activos
-    ORDER BY Nombre ASC;
-END;
-
--- 5) SP SEARCH BY
-GO
-CREATE OR ALTER PROCEDURE spBusquedaEmpleado
-    @busqueda VARCHAR(200)
-AS
-BEGIN
-    SELECT
-        EmpleadoId AS 'Codigo',
+        EmpleadoId,
         Nombre,
         Apellido,
         DUI,
@@ -107,8 +87,26 @@ BEGIN
         EstadoEmpleadoId
     FROM Empleado
     WHERE EstadoEmpleadoId = 1
-      AND (Nombre LIKE '%' + @busqueda + '%'
-       OR Apellido LIKE '%' + @busqueda + '%'
-       OR DUI LIKE '%' + @busqueda + '%')
     ORDER BY Nombre ASC;
 END;
+
+-- 5) SP SEARCH BY
+GO
+CREATE OR ALTER PROCEDURE spSelectEmpleadoById
+    @EmpleadoId INT
+AS
+BEGIN
+    SELECT
+        EmpleadoId,
+        Nombre,
+        Apellido,
+        DUI,
+        Correo,
+        Telefono,
+        Direccion,
+        EstadoEmpleadoId
+    FROM Empleado
+    WHERE EmpleadoId = @EmpleadoId
+      AND EstadoEmpleadoId = 1;
+END;
+GO

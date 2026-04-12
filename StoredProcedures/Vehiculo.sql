@@ -69,16 +69,15 @@ BEGIN
 END;
 
 -- 4) SP SELECT ALL
-GO
 CREATE OR ALTER PROCEDURE spSelectAllVehiculo
 AS
 BEGIN
     SELECT
-        v.VehiculoId AS 'Codigo',
-        c.Nombre AS 'Cliente',
+        v.VehiculoId,
+        c.Nombre,
         v.Placa,
-        t.Nombre AS 'TipoVehiculo',
-        e.Nombre AS 'EstadoVehiculo'
+        t.Nombre,
+        e.Nombre
     FROM Vehiculo v
     INNER JOIN Cliente c ON v.ClienteId = c.ClienteId
     INNER JOIN TipoVehiculo t ON v.TipoVehiculoId = t.TipoVehiculoId
@@ -88,22 +87,19 @@ BEGIN
 END;
 
 -- 5) SP SEARCH BY
-GO
-CREATE OR ALTER PROCEDURE spBusquedaVehiculo
-    @busqueda VARCHAR(200)
+CREATE OR ALTER PROCEDURE spSelectVehiculoById
+    @VehiculoId INT
 AS
 BEGIN
     SELECT
-        v.VehiculoId AS 'Codigo',
-        c.Nombre AS 'Cliente',
+        v.VehiculoId,
+        c.Nombre,
         v.Placa,
-        t.Nombre AS 'TipoVehiculo',
-        e.Nombre AS 'EstadoVehiculo'
+        t.Nombre,
+        e.Nombre
     FROM Vehiculo v
     INNER JOIN Cliente c ON v.ClienteId = c.ClienteId
     INNER JOIN TipoVehiculo t ON v.TipoVehiculoId = t.TipoVehiculoId
     INNER JOIN EstadoVehiculo e ON v.EstadoVehiculoId = e.EstadoVehiculoId
-    WHERE v.EstadoVehiculoId = 1
-      AND v.Placa LIKE '%' + @busqueda + '%'
-    ORDER BY v.Placa ASC;
+    WHERE v.VehiculoId = @VehiculoId;
 END;

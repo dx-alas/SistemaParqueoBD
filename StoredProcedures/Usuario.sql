@@ -89,10 +89,14 @@ CREATE OR ALTER PROCEDURE spSelectAllUsuario
 AS
 BEGIN
     SELECT 
-        u.UsuarioId AS 'Codigo',
+        u.UsuarioId,
         u.Nombre,
-        r.Nombre AS 'Rol',
-        e.Nombre AS 'EstadoUsuario'
+        u.Clave,
+        u.EmpleadoId,
+        u.RolId,
+        u.EstadoUsuarioId,
+        r.Nombre,
+        e.Nombre
     FROM Usuario u
     INNER JOIN Rol r ON u.RolId = r.RolId
     INNER JOIN EstadoUsuario e ON u.EstadoUsuarioId = e.EstadoUsuarioId
@@ -101,18 +105,21 @@ END;
 
 -- 5) SP SEARCH BY
 GO
-CREATE OR ALTER PROCEDURE spBusquedaUsuario
-    @busqueda VARCHAR(200)
+CREATE OR ALTER PROCEDURE spSelectUsuarioById
+    @UsuarioId INT
 AS
 BEGIN
-    SELECT
-        u.UsuarioId AS 'Codigo',
+    SELECT 
+        u.UsuarioId,
         u.Nombre,
-        r.Nombre AS 'Rol',
-        e.Nombre AS 'EstadoUsuario'
+        u.Clave,
+        u.EmpleadoId,
+        u.RolId,
+        u.EstadoUsuarioId,
+        r.Nombre,
+        e.Nombre
     FROM Usuario u
     INNER JOIN Rol r ON u.RolId = r.RolId
     INNER JOIN EstadoUsuario e ON u.EstadoUsuarioId = e.EstadoUsuarioId
-    WHERE u.Nombre LIKE '%' + @busqueda + '%'
-    ORDER BY u.Nombre ASC;
+    WHERE u.UsuarioId = @UsuarioId;
 END;

@@ -59,7 +59,7 @@ CREATE OR ALTER PROCEDURE spSelectAllTicket
 AS
 BEGIN
     SELECT
-        t.TicketId AS 'Codigo',
+        t.TicketId,
         t.Fecha,
         t.HoraEntrada,
         t.HoraSalida,
@@ -67,9 +67,9 @@ BEGIN
         t.TarjetaId,
         t.CorteId,
         t.MultaId,
-        u.Nombre AS 'Usuario',
-        e.Nombre AS 'EstadoTicket',
-        ep.Estado AS 'EstadoPermanencia'
+        u.Nombre,
+        e.Nombre,
+        ep.Estado
     FROM Ticket t
     INNER JOIN Usuario u ON t.UsuarioId = u.UsuarioId
     INNER JOIN EstadoTicket e ON t.EstadoTicketId = e.EstadoTicketId
@@ -79,12 +79,12 @@ END;
 
 -- 5) SP SEARCH BY
 GO
-CREATE OR ALTER PROCEDURE spBusquedaTicket
-    @busqueda VARCHAR(200)
+CREATE OR ALTER PROCEDURE spSelectTicketById
+    @TicketId INT
 AS
 BEGIN
     SELECT
-        t.TicketId AS 'Codigo',
+        t.TicketId,
         t.Fecha,
         t.HoraEntrada,
         t.HoraSalida,
@@ -92,13 +92,12 @@ BEGIN
         t.TarjetaId,
         t.CorteId,
         t.MultaId,
-        u.Nombre AS 'Usuario',
-        e.Nombre AS 'EstadoTicket',
-        ep.Estado AS 'EstadoPermanencia'
+        u.Nombre,
+        e.Nombre,
+        ep.Estado
     FROM Ticket t
     INNER JOIN Usuario u ON t.UsuarioId = u.UsuarioId
     INNER JOIN EstadoTicket e ON t.EstadoTicketId = e.EstadoTicketId
     INNER JOIN EstadoPermanencia ep ON t.EstadoPermanenciaId = ep.EstadoPermanenciaId
-    WHERE u.Nombre LIKE '%' + @busqueda + '%'
-    ORDER BY t.Fecha DESC;
+    WHERE t.TicketId = @TicketId;
 END;

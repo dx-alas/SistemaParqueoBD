@@ -60,9 +60,9 @@ GO
 CREATE OR ALTER PROCEDURE spSelectAllTipoVehiculo
 AS
 BEGIN
-    SELECT 
-        TipoVehiculoId AS 'Codigo',
-        Nombre AS 'Nombre',
+    SELECT
+        TipoVehiculoId,
+        Nombre,
         Precio
     FROM TipoVehiculo
     ORDER BY Nombre ASC;
@@ -70,15 +70,14 @@ END;
 
 -- 5) SP SEARCH BY
 GO
-CREATE OR ALTER PROCEDURE spBusquedaTipoVehiculo
-    @busqueda VARCHAR(200)
+CREATE OR ALTER PROCEDURE spSelectTipoVehiculoById
+    @TipoVehiculoId INT
 AS
 BEGIN
     SELECT
-        TipoVehiculoId AS 'Codigo',
-        Nombre AS 'Nombre',
+        TipoVehiculoId,
+        Nombre,
         Precio
     FROM TipoVehiculo
-    WHERE Nombre LIKE '%' + @busqueda + '%'
-    ORDER BY Nombre ASC;
+    WHERE TipoVehiculoId = @TipoVehiculoId;
 END;

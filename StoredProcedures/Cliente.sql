@@ -83,16 +83,16 @@ CREATE OR ALTER PROCEDURE spSelectAllCliente
 AS
 BEGIN
     SELECT 
-        c.ClienteId AS 'Codigo',
+        c.ClienteId,
         c.Nombre,
         c.Apellido,
         c.Telefono,
         c.TipoDocumento,
         c.DUI,
         c.CarnetExtranjero,
-        t.Nombre AS 'TipoCliente',
+        t.Nombre,
         c.TarjetaId,
-        e.Nombre AS 'EstadoCliente'
+        e.Nombre
     FROM Cliente c
     INNER JOIN TipoCliente t ON c.TipoClienteId = t.TipoClienteId
     INNER JOIN EstadoCliente e ON c.EstadoClienteId = e.EstadoClienteId
@@ -100,30 +100,28 @@ BEGIN
     ORDER BY c.Nombre ASC;
 END;
 GO
+GO
 
--- 5) SP SEARCH BY
-CREATE OR ALTER PROCEDURE spBusquedaCliente
-    @busqueda VARCHAR(200)
+-- 5) SP SELECT BY
+CREATE OR ALTER PROCEDURE spSelectClienteById
+    @ClienteId INT
 AS
 BEGIN
-    SELECT
-        c.ClienteId AS 'Codigo',
+    SELECT 
+        c.ClienteId,
         c.Nombre,
         c.Apellido,
         c.Telefono,
         c.TipoDocumento,
         c.DUI,
         c.CarnetExtranjero,
-        t.Nombre AS 'TipoCliente',
+        t.Nombre,
         c.TarjetaId,
-        e.Nombre AS 'EstadoCliente'
+        e.Nombre
     FROM Cliente c
     INNER JOIN TipoCliente t ON c.TipoClienteId = t.TipoClienteId
     INNER JOIN EstadoCliente e ON c.EstadoClienteId = e.EstadoClienteId
-    WHERE c.EstadoClienteId = 1
-      AND (c.Nombre LIKE '%' + @busqueda + '%'
-       OR c.Apellido LIKE '%' + @busqueda + '%'
-       OR c.DUI LIKE '%' + @busqueda + '%')
-    ORDER BY c.Nombre ASC;
+    WHERE c.ClienteId = @ClienteId
+      AND c.EstadoClienteId = 1;
 END;
 GO

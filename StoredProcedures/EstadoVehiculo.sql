@@ -57,23 +57,22 @@ GO
 CREATE OR ALTER PROCEDURE spSelectAllEstadoVehiculo
 AS
 BEGIN
-    SELECT 
-        EstadoVehiculoId AS 'Codigo',
-        Nombre AS 'Nombre'
+    SELECT
+        EstadoVehiculoId,
+        Nombre
     FROM EstadoVehiculo
     ORDER BY Nombre ASC;
 END;
 
 -- 5) SP SEARCH BY
 GO
-CREATE OR ALTER PROCEDURE spBusquedaEstadoVehiculo
-    @busqueda VARCHAR(200)
+CREATE OR ALTER PROCEDURE spSelectEstadoVehiculoById
+    @EstadoVehiculoId INT
 AS
 BEGIN
     SELECT
-        EstadoVehiculoId AS 'Codigo',
-        Nombre AS 'Nombre'
+        EstadoVehiculoId,
+        Nombre
     FROM EstadoVehiculo
-    WHERE Nombre LIKE '%' + @busqueda + '%'
-    ORDER BY Nombre ASC;
+    WHERE EstadoVehiculoId = @EstadoVehiculoId;
 END;

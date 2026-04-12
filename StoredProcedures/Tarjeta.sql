@@ -63,30 +63,23 @@ CREATE OR ALTER PROCEDURE spSelectAllTarjeta
 AS
 BEGIN
     SELECT
-        t.TarjetaId AS 'Codigo',
-        t.Codigo,
-        t.EstadoTarjetaId,  
-        e.Nombre AS 'EstadoTarjeta'
-    FROM Tarjeta t
-    INNER JOIN EstadoTarjeta e 
-        ON t.EstadoTarjetaId = e.EstadoTarjetaId
-    ORDER BY t.Codigo ASC;
+        TarjetaId,
+        Codigo,
+        EstadoTarjetaId
+    FROM Tarjeta
+    ORDER BY Codigo ASC;
 END;
 
 -- 5) SP SEARCH BY
 GO
-CREATE OR ALTER PROCEDURE spBusquedaTarjeta
-    @busqueda VARCHAR(200)
+CREATE OR ALTER PROCEDURE spSelectTarjetaById
+    @TarjetaId INT
 AS
 BEGIN
     SELECT
-        t.TarjetaId AS 'Codigo',
-        t.Codigo,
-        t.EstadoTarjetaId,     
-        e.Nombre AS 'EstadoTarjeta'
-    FROM Tarjeta t
-    INNER JOIN EstadoTarjeta e 
-        ON t.EstadoTarjetaId = e.EstadoTarjetaId
-    WHERE t.Codigo LIKE '%' + @busqueda + '%'
-    ORDER BY t.Codigo ASC;
+        TarjetaId,
+        Codigo,
+        EstadoTarjetaId
+    FROM Tarjeta
+    WHERE TarjetaId = @TarjetaId;
 END;

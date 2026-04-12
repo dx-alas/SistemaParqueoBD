@@ -56,23 +56,22 @@ GO
 CREATE OR ALTER PROCEDURE spSelectAllTipoCliente
 AS
 BEGIN
-    SELECT 
-        TipoClienteId AS 'Codigo',
-        Nombre AS 'Nombre'
+    SELECT
+        TipoClienteId,
+        Nombre
     FROM TipoCliente
     ORDER BY Nombre ASC;
 END;
 
 -- 5) SP SEARCH BY
 GO
-CREATE OR ALTER PROCEDURE spBusquedaTipoCliente
-    @busqueda VARCHAR(200)
+CREATE OR ALTER PROCEDURE spSelectTipoClienteById
+    @TipoClienteId INT
 AS
 BEGIN
     SELECT
-        TipoClienteId AS 'Codigo',
-        Nombre AS 'Nombre'
+        TipoClienteId,
+        Nombre
     FROM TipoCliente
-    WHERE Nombre LIKE '%' + @busqueda + '%'
-    ORDER BY Nombre ASC;
+    WHERE TipoClienteId = @TipoClienteId;
 END;

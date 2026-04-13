@@ -63,7 +63,7 @@ BEGIN
     FROM EstadoPermanencia;
 END;
 
--- 5) SP SEARCH BY
+-- 5) SP SELECT BY
 GO
 CREATE OR ALTER PROCEDURE spSelectEstadoPermanenciaById
     @EstadoPermanenciaId INT

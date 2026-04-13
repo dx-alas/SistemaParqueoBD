@@ -77,7 +77,7 @@ BEGIN
     ORDER BY t.Fecha DESC;
 END;
 
--- 5) SP SEARCH BY
+-- 5) SP SELECT BY
 GO
 CREATE OR ALTER PROCEDURE spSelectTicketById
     @TicketId INT

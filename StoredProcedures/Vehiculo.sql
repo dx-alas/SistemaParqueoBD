@@ -86,7 +86,7 @@ BEGIN
     ORDER BY v.Placa ASC;
 END;
 
--- 5) SP SEARCH BY
+-- 5) SP SELECT BY
 CREATE OR ALTER PROCEDURE spSelectVehiculoById
     @VehiculoId INT
 AS

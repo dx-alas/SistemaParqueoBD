@@ -63,7 +63,7 @@ BEGIN
     ORDER BY Nombre ASC;
 END;
 
--- 5) SP SEARCH BY
+-- 5) SP SELECT BY
 GO
 CREATE OR ALTER PROCEDURE spSelectEstadoTicketById
     @EstadoTicketId INT

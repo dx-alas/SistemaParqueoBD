@@ -1,4 +1,77 @@
---TABLA 7: Usuario
+CREATE DATABASE SistemaParqueoUnab;
+GO
+USE SistemaParqueoUnab;
+GO
+
+-- TABLAS NECESARIAS PARA PROBAR LOGIN
+CREATE TABLE EstadoUsuario (
+    EstadoUsuarioId INT PRIMARY KEY IDENTITY,
+    Nombre VARCHAR(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE Rol (
+    RolId INT PRIMARY KEY IDENTITY,
+    Nombre VARCHAR(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE EstadoEmpleado (
+    EstadoEmpleadoId INT PRIMARY KEY IDENTITY,
+    Nombre VARCHAR(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE Empleado(
+    EmpleadoId INT PRIMARY KEY IDENTITY,
+    Nombre VARCHAR(50) NOT NULL,
+    Apellido VARCHAR(50) NOT NULL,
+    DUI VARCHAR(9) NOT NULL UNIQUE,
+    Correo VARCHAR(50) NULL,
+    Telefono VARCHAR(15) NOT NULL,
+    Direccion VARCHAR(255) NOT NULL,
+    EstadoEmpleadoId INT NOT NULL DEFAULT 1,
+    FOREIGN KEY (EstadoEmpleadoId) REFERENCES EstadoEmpleado(EstadoEmpleadoId)
+);
+
+CREATE TABLE Usuario (
+    UsuarioId INT PRIMARY KEY IDENTITY,
+    Nombre VARCHAR(50) NOT NULL UNIQUE,
+    Clave VARCHAR(255) NOT NULL,
+    EmpleadoId INT NOT NULL UNIQUE,
+    RolId INT NOT NULL,
+    EstadoUsuarioId INT NOT NULL DEFAULT 1,
+    FOREIGN KEY (EmpleadoId) REFERENCES Empleado(EmpleadoId),
+    FOREIGN KEY (RolId) REFERENCES Rol(RolId),
+    FOREIGN KEY (EstadoUsuarioId) REFERENCES EstadoUsuario(EstadoUsuarioId)
+);
+GO
+
+-- DATOS DE PRUEBA
+INSERT INTO EstadoUsuario (Nombre)
+VALUES 
+('Activo'),
+('Inactivo');
+
+INSERT INTO Rol (Nombre)
+VALUES 
+('Administrador');
+
+INSERT INTO EstadoEmpleado (Nombre)
+VALUES 
+('Activo'),
+('Inactivo');
+
+
+INSERT INTO Empleado 
+    (Nombre, Apellido, DUI, Correo, Telefono, Direccion, EstadoEmpleadoId)
+VALUES
+    ('Admin', 'Sistema', '123456789', 'admin@unab.com', '70000000', 'UNAB',1);
+ 
+INSERT INTO Usuario 
+    (Nombre, Clave, EmpleadoId, RolId, EstadoUsuarioId)
+VALUES
+    ('admin', '123', 1, 1, 1);
+GO
+
+-- PROCEDIMIENTOS ALMACENADOS
 
 -- 1) SP INSERT
 GO
@@ -103,7 +176,7 @@ BEGIN
     ORDER BY u.Nombre ASC;
 END;
 
--- 5) SP SELECT BY
+-- 5) SP SELECT BY ID
 GO
 CREATE OR ALTER PROCEDURE spSelectUsuarioById
     @UsuarioId INT

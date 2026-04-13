@@ -70,7 +70,7 @@ BEGIN
     ORDER BY Codigo ASC;
 END;
 
--- 5) SP SEARCH BY
+-- 5) SP SELECT BY
 GO
 CREATE OR ALTER PROCEDURE spSelectTarjetaById
     @TarjetaId INT

@@ -3,17 +3,17 @@
 -- 1) SP INSERT
 GO
 CREATE OR ALTER PROCEDURE spInsertEstadoPermanencia
-    @Estado VARCHAR(50)
+    @Nombre VARCHAR(50)
 AS
 BEGIN
-    IF EXISTS (SELECT 1 FROM EstadoPermanencia WHERE Estado = @Estado)
+    IF EXISTS (SELECT 1 FROM EstadoPermanencia WHERE Nombre = @Nombre)
         BEGIN
             PRINT 'El estado de permanencia que intenta registrar ya existe en la base de datos';
         END
     ELSE
         BEGIN
-            INSERT INTO EstadoPermanencia(Estado)
-            VALUES (@Estado);
+            INSERT INTO EstadoPermanencia(Nombre)
+            VALUES (@Nombre);
 
             PRINT 'Registro insertado correctamente';
         END
@@ -23,17 +23,17 @@ END;
 GO
 CREATE OR ALTER PROCEDURE spUpdateEstadoPermanencia
     @EstadoPermanenciaId INT,
-    @Estado VARCHAR(50)
+    @Nombre VARCHAR(50)
 AS
 BEGIN
-    IF EXISTS (SELECT 1 FROM EstadoPermanencia WHERE Estado = @Estado AND EstadoPermanenciaId <> @EstadoPermanenciaId)
+    IF EXISTS (SELECT 1 FROM EstadoPermanencia WHERE Nombre = @Nombre AND EstadoPermanenciaId <> @EstadoPermanenciaId)
         BEGIN
             PRINT 'El estado de permanencia ya existe en la base de datos';
         END
     ELSE
         BEGIN
             UPDATE EstadoPermanencia
-            SET Estado = @Estado
+            SET Nombre = @Nombre
             WHERE EstadoPermanenciaId = @EstadoPermanenciaId;
 
             PRINT 'Registro actualizado correctamente';
@@ -59,7 +59,7 @@ AS
 BEGIN
     SELECT
         EstadoPermanenciaId,
-        Estado
+        Nombre
     FROM EstadoPermanencia;
 END;
 
@@ -71,7 +71,7 @@ AS
 BEGIN
     SELECT
         EstadoPermanenciaId,
-        Estado
+        Nombre
     FROM EstadoPermanencia
     WHERE EstadoPermanenciaId = @EstadoPermanenciaId;
 END;

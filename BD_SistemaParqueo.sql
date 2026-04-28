@@ -149,7 +149,7 @@ CREATE TABLE MultaTicket (
 
 CREATE TABLE EstadoPermanencia (
     EstadoPermanenciaId INT PRIMARY KEY IDENTITY,
-    Estado VARCHAR(50) NOT NULL UNIQUE
+    Nombre VARCHAR(50) NOT NULL UNIQUE
 );
 
 CREATE TABLE Ticket (

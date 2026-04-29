@@ -88,19 +88,15 @@ GO
 CREATE OR ALTER PROCEDURE spSelectAllUsuario
 AS
 BEGIN
-    SELECT 
-        u.UsuarioId,
-        u.Nombre,
-        u.Clave,
-        u.EmpleadoId,
-        u.RolId,
-        u.EstadoUsuarioId,
-        r.Nombre,
-        e.Nombre
-    FROM Usuario u
-    INNER JOIN Rol r ON u.RolId = r.RolId
-    INNER JOIN EstadoUsuario e ON u.EstadoUsuarioId = e.EstadoUsuarioId
-    ORDER BY u.Nombre ASC;
+    SELECT
+        UsuarioId,
+        Nombre,
+        Clave,
+        EmpleadoId,
+        RolId,
+        EstadoUsuarioId
+    FROM Usuario
+    ORDER BY Nombre ASC;
 END;
 
 -- 5) SP SELECT BY
@@ -109,19 +105,15 @@ CREATE OR ALTER PROCEDURE spSelectUsuarioById
     @UsuarioId INT
 AS
 BEGIN
-    SELECT 
-        u.UsuarioId,
-        u.Nombre,
-        u.Clave,
-        u.EmpleadoId,
-        u.RolId,
-        u.EstadoUsuarioId,
-        r.Nombre,
-        e.Nombre
-    FROM Usuario u
-    INNER JOIN Rol r ON u.RolId = r.RolId
-    INNER JOIN EstadoUsuario e ON u.EstadoUsuarioId = e.EstadoUsuarioId
-    WHERE u.UsuarioId = @UsuarioId;
+    SELECT
+        UsuarioId,
+        Nombre,
+        Clave,
+        EmpleadoId,
+        RolId,
+        EstadoUsuarioId
+    FROM Usuario
+    WHERE UsuarioId = @UsuarioId;
 END;
 
 -- SP LOGIN

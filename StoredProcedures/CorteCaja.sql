@@ -15,9 +15,9 @@ BEGIN
 
     PRINT 'Corte de caja abierto correctamente';
 END;
-GO
 
 -- 2) SP UPDATE (CIERRE)
+GO
 CREATE OR ALTER PROCEDURE spUpdateCorteCaja
     @CorteId INT,
     @HoraEntrega TIME,
@@ -42,59 +42,53 @@ BEGIN
 
     PRINT 'Corte de caja cerrado correctamente';
 END;
-GO
 
 -- 3) SP DELETE
+GO
 CREATE OR ALTER PROCEDURE spDeleteCorteCaja
     @CorteId INT
 AS
 BEGIN
     PRINT 'No se permite eliminar cortes de caja';
 END;
-GO
 
 -- 4) SP SELECT ALL
+GO
 CREATE OR ALTER PROCEDURE spSelectAllCorteCaja
 AS
 BEGIN
     SELECT
-        c.CorteId,
-        c.Fecha,
-        c.HoraInicio,
-        c.HoraEntrega,
-        c.MontoInicial,
-        c.MontoTotal,
-        c.ObservacionInicial,
-        c.ObservacionFinal,
-        ua.Nombre,
-        uc.Nombre
-    FROM CorteCaja c
-    INNER JOIN Usuario ua ON c.UsuarioAperturaId = ua.UsuarioId
-    LEFT JOIN Usuario uc ON c.UsuarioCierreId = uc.UsuarioId
-    ORDER BY c.Fecha DESC;
+        CorteId,
+        Fecha,
+        HoraInicio,
+        HoraEntrega,
+        MontoInicial,
+        MontoTotal,
+        ObservacionInicial,
+        ObservacionFinal,
+        UsuarioAperturaId,
+        UsuarioCierreId
+    FROM CorteCaja
+    ORDER BY Fecha DESC;
 END;
-GO
 
 -- 5) SP SELECT BY ID
 GO
 CREATE OR ALTER PROCEDURE spSelectCorteCajaById
-    @CorteId INT
+@CorteId INT
 AS
 BEGIN
     SELECT
-        c.CorteId,
-        c.Fecha,
-        c.HoraInicio,
-        c.HoraEntrega,
-        c.MontoInicial,
-        c.MontoTotal,
-        c.ObservacionInicial,
-        c.ObservacionFinal,
-        ua.Nombre,
-        uc.Nombre
-    FROM CorteCaja c
-    INNER JOIN Usuario ua ON c.UsuarioAperturaId = ua.UsuarioId
-    LEFT JOIN Usuario uc ON c.UsuarioCierreId = uc.UsuarioId
-    WHERE c.CorteId = @CorteId;
+        CorteId,
+        Fecha,
+        HoraInicio,
+        HoraEntrega,
+        MontoInicial,
+        MontoTotal,
+        ObservacionInicial,
+        ObservacionFinal,
+        UsuarioAperturaId,
+        UsuarioCierreId
+    FROM CorteCaja
+    WHERE CorteId = @CorteId;
 END;
-GO

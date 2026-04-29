@@ -58,23 +58,20 @@ GO
 CREATE OR ALTER PROCEDURE spSelectAllTicket
 AS
 BEGIN
-    SELECT
-        t.TicketId,
-        t.Fecha,
-        t.HoraEntrada,
-        t.HoraSalida,
-        t.Total,
-        t.TarjetaId,
-        t.CorteId,
-        t.MultaId,
-        u.Nombre,
-        e.Nombre,
-        ep.Estado
-    FROM Ticket t
-    INNER JOIN Usuario u ON t.UsuarioId = u.UsuarioId
-    INNER JOIN EstadoTicket e ON t.EstadoTicketId = e.EstadoTicketId
-    INNER JOIN EstadoPermanencia ep ON t.EstadoPermanenciaId = ep.EstadoPermanenciaId
-    ORDER BY t.Fecha DESC;
+    SELECT 
+        TicketId,
+        Fecha,
+        HoraEntrada,
+        HoraSalida,
+        Total,
+        TarjetaId,
+        CorteId,
+        MultaId,
+        UsuarioId,
+        EstadoTicketId,
+        EstadoPermanenciaId
+    FROM Ticket
+    ORDER BY Fecha DESC;
 END;
 
 -- 5) SP SELECT BY
@@ -83,21 +80,18 @@ CREATE OR ALTER PROCEDURE spSelectTicketById
     @TicketId INT
 AS
 BEGIN
-    SELECT
-        t.TicketId,
-        t.Fecha,
-        t.HoraEntrada,
-        t.HoraSalida,
-        t.Total,
-        t.TarjetaId,
-        t.CorteId,
-        t.MultaId,
-        u.Nombre,
-        e.Nombre,
-        ep.Estado
-    FROM Ticket t
-    INNER JOIN Usuario u ON t.UsuarioId = u.UsuarioId
-    INNER JOIN EstadoTicket e ON t.EstadoTicketId = e.EstadoTicketId
-    INNER JOIN EstadoPermanencia ep ON t.EstadoPermanenciaId = ep.EstadoPermanenciaId
-    WHERE t.TicketId = @TicketId;
+    SELECT 
+        TicketId,
+        Fecha,
+        HoraEntrada,
+        HoraSalida,
+        Total,
+        TarjetaId,
+        CorteId,
+        MultaId,
+        UsuarioId,
+        EstadoTicketId,
+        EstadoPermanenciaId
+    FROM Ticket
+    WHERE TicketId = @TicketId;
 END;

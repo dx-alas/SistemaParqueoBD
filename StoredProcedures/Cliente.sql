@@ -26,9 +26,9 @@ BEGIN
             PRINT 'Registro insertado correctamente';
         END
 END;
-GO
 
 -- 2) SP UPDATE
+GO
 CREATE OR ALTER PROCEDURE spUpdateCliente
     @ClienteId INT,
     @Nombre VARCHAR(50),
@@ -63,9 +63,9 @@ BEGIN
             PRINT 'Registro actualizado correctamente';
         END
 END;
-GO
 
 -- 3) SP DELETE (lógica)
+GO
 CREATE OR ALTER PROCEDURE spDeleteCliente
     @ClienteId INT
 AS
@@ -76,52 +76,45 @@ BEGIN
 
     PRINT 'Cliente eliminado correctamente';
 END;
-GO
 
 -- 4) SP SELECT ALL
+GO
 CREATE OR ALTER PROCEDURE spSelectAllCliente
 AS
 BEGIN
     SELECT 
-        c.ClienteId,
-        c.Nombre,
-        c.Apellido,
-        c.Telefono,
-        c.TipoDocumento,
-        c.DUI,
-        c.CarnetExtranjero,
-        t.Nombre,
-        c.TarjetaId,
-        e.Nombre
-    FROM Cliente c
-    INNER JOIN TipoCliente t ON c.TipoClienteId = t.TipoClienteId
-    INNER JOIN EstadoCliente e ON c.EstadoClienteId = e.EstadoClienteId
-    WHERE c.EstadoClienteId = 1
-    ORDER BY c.Nombre ASC;
+        ClienteId,
+        Nombre,
+        Apellido,
+        Telefono,
+        TipoDocumento,
+        DUI,
+        CarnetExtranjero,
+        TarjetaId,
+        TipoClienteId,
+        EstadoClienteId
+    FROM Cliente
+    WHERE EstadoClienteId = 1
+    ORDER BY Nombre ASC;
 END;
-GO
-GO
 
 -- 5) SP SELECT BY
+GO
 CREATE OR ALTER PROCEDURE spSelectClienteById
     @ClienteId INT
 AS
 BEGIN
     SELECT 
-        c.ClienteId,
-        c.Nombre,
-        c.Apellido,
-        c.Telefono,
-        c.TipoDocumento,
-        c.DUI,
-        c.CarnetExtranjero,
-        t.Nombre,
-        c.TarjetaId,
-        e.Nombre
-    FROM Cliente c
-    INNER JOIN TipoCliente t ON c.TipoClienteId = t.TipoClienteId
-    INNER JOIN EstadoCliente e ON c.EstadoClienteId = e.EstadoClienteId
-    WHERE c.ClienteId = @ClienteId
-      AND c.EstadoClienteId = 1;
+        ClienteId,
+        Nombre,
+        Apellido,
+        Telefono,
+        TipoDocumento,
+        DUI,
+        CarnetExtranjero,
+        TarjetaId,
+        TipoClienteId,
+        EstadoClienteId
+    FROM Cliente
+    WHERE ClienteId = @ClienteId;
 END;
-GO

@@ -69,37 +69,33 @@ BEGIN
 END;
 
 -- 4) SP SELECT ALL
+GO
 CREATE OR ALTER PROCEDURE spSelectAllVehiculo
 AS
 BEGIN
     SELECT
-        v.VehiculoId,
-        c.Nombre,
-        v.Placa,
-        t.Nombre,
-        e.Nombre
-    FROM Vehiculo v
-    INNER JOIN Cliente c ON v.ClienteId = c.ClienteId
-    INNER JOIN TipoVehiculo t ON v.TipoVehiculoId = t.TipoVehiculoId
-    INNER JOIN EstadoVehiculo e ON v.EstadoVehiculoId = e.EstadoVehiculoId
-    WHERE v.EstadoVehiculoId = 1
-    ORDER BY v.Placa ASC;
+        VehiculoId,
+        ClienteId,
+        Placa,
+        TipoVehiculoId,
+        EstadoVehiculoId
+    FROM Vehiculo
+    WHERE EstadoVehiculoId = 1
+    ORDER BY Placa ASC;
 END;
 
 -- 5) SP SELECT BY
+GO
 CREATE OR ALTER PROCEDURE spSelectVehiculoById
-    @VehiculoId INT
+@VehiculoId INT
 AS
 BEGIN
     SELECT
-        v.VehiculoId,
-        c.Nombre,
-        v.Placa,
-        t.Nombre,
-        e.Nombre
-    FROM Vehiculo v
-    INNER JOIN Cliente c ON v.ClienteId = c.ClienteId
-    INNER JOIN TipoVehiculo t ON v.TipoVehiculoId = t.TipoVehiculoId
-    INNER JOIN EstadoVehiculo e ON v.EstadoVehiculoId = e.EstadoVehiculoId
-    WHERE v.VehiculoId = @VehiculoId;
+        VehiculoId,
+        ClienteId,
+        Placa,
+        TipoVehiculoId,
+        EstadoVehiculoId
+    FROM Vehiculo
+    WHERE VehiculoId = @VehiculoId;
 END;

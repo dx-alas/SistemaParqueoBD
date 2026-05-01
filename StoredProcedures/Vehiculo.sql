@@ -3,8 +3,8 @@
 -- 1) SP INSERT
 GO
 CREATE OR ALTER PROCEDURE spInsertVehiculo
-    @ClienteId INT,
     @Placa VARCHAR(20),
+    @ClienteId INT,
     @TipoVehiculoId INT,
     @EstadoVehiculoId INT = 1
 AS
@@ -15,8 +15,8 @@ BEGIN
         END
     ELSE
         BEGIN
-            INSERT INTO Vehiculo(ClienteId, Placa, TipoVehiculoId, EstadoVehiculoId)
-            VALUES (@ClienteId, @Placa, @TipoVehiculoId, @EstadoVehiculoId);
+            INSERT INTO Vehiculo (Placa, ClienteId, TipoVehiculoId, EstadoVehiculoId)
+            VALUES (@Placa, @ClienteId, @TipoVehiculoId, @EstadoVehiculoId);
 
             PRINT 'Registro insertado correctamente';
         END
@@ -26,8 +26,8 @@ END;
 GO
 CREATE OR ALTER PROCEDURE spUpdateVehiculo
     @VehiculoId INT,
-    @ClienteId INT,
     @Placa VARCHAR(20),
+    @ClienteId INT,
     @TipoVehiculoId INT,
     @EstadoVehiculoId INT
 AS
@@ -39,8 +39,8 @@ BEGIN
     ELSE
         BEGIN
             UPDATE Vehiculo
-            SET ClienteId = @ClienteId,
-                Placa = @Placa,
+            SET Placa = @Placa,
+                ClienteId = @ClienteId,
                 TipoVehiculoId = @TipoVehiculoId,
                 EstadoVehiculoId = @EstadoVehiculoId
             WHERE VehiculoId = @VehiculoId;
@@ -75,12 +75,11 @@ AS
 BEGIN
     SELECT
         VehiculoId,
-        ClienteId,
         Placa,
+        ClienteId,
         TipoVehiculoId,
         EstadoVehiculoId
     FROM Vehiculo
-    WHERE EstadoVehiculoId = 1
     ORDER BY Placa ASC;
 END;
 
@@ -92,8 +91,8 @@ AS
 BEGIN
     SELECT
         VehiculoId,
-        ClienteId,
         Placa,
+        ClienteId,
         TipoVehiculoId,
         EstadoVehiculoId
     FROM Vehiculo

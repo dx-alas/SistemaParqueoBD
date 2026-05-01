@@ -86,7 +86,6 @@ BEGIN
         Direccion,
         EstadoEmpleadoId
     FROM Empleado
-    WHERE EstadoEmpleadoId = 1
     ORDER BY Nombre ASC;
 END;
 
@@ -107,6 +106,5 @@ BEGIN
         EstadoEmpleadoId
     FROM Empleado
     WHERE EmpleadoId = @EmpleadoId
-      AND EstadoEmpleadoId = 1;
 END;
 GO

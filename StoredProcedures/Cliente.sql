@@ -94,7 +94,6 @@ BEGIN
         TipoClienteId,
         EstadoClienteId
     FROM Cliente
-    WHERE EstadoClienteId = 1
     ORDER BY Nombre ASC;
 END;
 

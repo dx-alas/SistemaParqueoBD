@@ -97,12 +97,6 @@ CREATE TABLE Cliente (
     FOREIGN KEY (TipoClienteId) REFERENCES TipoCliente(TipoClienteId),
     FOREIGN KEY (TarjetaId) REFERENCES Tarjeta(TarjetaId),
     FOREIGN KEY (EstadoClienteId) REFERENCES EstadoCliente(EstadoClienteId),
-
-    CHECK (
-        (TipoDocumento = 'DUI' AND DUI IS NOT NULL AND CarnetExtranjero IS NULL)
-        OR
-        (TipoDocumento = 'CR' AND CarnetExtranjero IS NOT NULL AND DUI IS NULL)
-    )
 );
 
 CREATE TABLE Parqueo ( 

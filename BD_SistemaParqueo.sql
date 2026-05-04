@@ -120,19 +120,26 @@ CREATE TABLE Vehiculo (
     FOREIGN KEY (EstadoVehiculoId) REFERENCES EstadoVehiculo(EstadoVehiculoId)
 );
 
+CREATE TABLE EstadoCorte (
+    EstadoCorteId INT PRIMARY KEY IDENTITY,
+    Nombre VARCHAR(50) UNIQUE
+);
+
 CREATE TABLE CorteCaja (
     CorteId INT PRIMARY KEY IDENTITY,
     Fecha DATE NOT NULL,
     HoraInicio TIME NOT NULL,
     HoraEntrega TIME NULL,
-    MontoInicial DECIMAL(10,2) NULL CHECK (MontoInicial >= 0),
+    MontoInicial DECIMAL(10,2) NOT NULL CHECK (MontoInicial >= 0),
     MontoTotal DECIMAL(10,2) NULL CHECK (MontoTotal >= 0),
     ObservacionInicial VARCHAR(255) NULL,
     ObservacionFinal VARCHAR(255) NULL,
-    UsuarioAperturaId INT NOT NULL,  -- Administrador que abre el corte
-    UsuarioCierreId INT NULL,        -- Administrador que cierra el corte
+    UsuarioAperturaId INT NOT NULL,
+    UsuarioCierreId INT NULL,
+    EstadoCorteId INT NOT NULL DEFAULT 1,
     FOREIGN KEY (UsuarioAperturaId) REFERENCES Usuario(UsuarioId),
-    FOREIGN KEY (UsuarioCierreId) REFERENCES Usuario(UsuarioId)
+    FOREIGN KEY (UsuarioCierreId) REFERENCES Usuario(UsuarioId),
+    FOREIGN KEY (EstadoCorteId) REFERENCES EstadoCorte(EstadoCorteId)
 );
 
 CREATE TABLE MultaTicket (

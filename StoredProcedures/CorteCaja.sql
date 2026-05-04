@@ -10,10 +10,21 @@ CREATE OR ALTER PROCEDURE spInsertCorteCaja
     @UsuarioAperturaId INT
 AS
 BEGIN
-    INSERT INTO CorteCaja(Fecha, HoraInicio, MontoInicial, ObservacionInicial, UsuarioAperturaId)
-    VALUES (@Fecha, @HoraInicio, @MontoInicial, @ObservacionInicial, @UsuarioAperturaId);
+    -- Validar que no exista un corte abierto
+    IF EXISTS (SELECT 1 FROM CorteCaja WHERE EstadoCorteId = 1)
+    BEGIN
+        PRINT 'Ya existe un corte de caja abierto';
+        RETURN;
+    END
+
+    INSERT INTO CorteCaja
+        (Fecha, HoraInicio, MontoInicial, ObservacionInicial, UsuarioAperturaId, EstadoCorteId)
+    VALUES 
+        (@Fecha, @HoraInicio, @MontoInicial, @ObservacionInicial, @UsuarioAperturaId, 1);
 
     PRINT 'Corte de caja abierto correctamente';
+
+    SELECT SCOPE_IDENTITY() AS CorteId;
 END;
 
 -- 2) SP UPDATE (CIERRE)
@@ -26,18 +37,20 @@ CREATE OR ALTER PROCEDURE spUpdateCorteCaja
     @UsuarioCierreId INT
 AS
 BEGIN
-    -- Validar que no esté ya cerrado
-    IF EXISTS (SELECT 1 FROM CorteCaja WHERE CorteId = @CorteId AND UsuarioCierreId IS NOT NULL)
-        BEGIN
-            PRINT 'El corte de caja ya fue cerrado';
-            RETURN;
-        END
+    -- Validar que esté abierto
+    IF NOT EXISTS (SELECT 1 FROM CorteCaja WHERE CorteId = @CorteId AND EstadoCorteId = 1)
+    BEGIN
+        PRINT 'El corte ya está cerrado o no existe';
+        RETURN;
+    END
 
     UPDATE CorteCaja
-    SET HoraEntrega = @HoraEntrega,
+    SET 
+        HoraEntrega = @HoraEntrega,
         MontoTotal = @MontoTotal,
         ObservacionFinal = @ObservacionFinal,
-        UsuarioCierreId = @UsuarioCierreId
+        UsuarioCierreId = @UsuarioCierreId,
+        EstadoCorteId = 2
     WHERE CorteId = @CorteId;
 
     PRINT 'Corte de caja cerrado correctamente';
@@ -67,15 +80,17 @@ BEGIN
         ObservacionInicial,
         ObservacionFinal,
         UsuarioAperturaId,
-        UsuarioCierreId
+        UsuarioCierreId,
+        EstadoCorteId
     FROM CorteCaja
-    ORDER BY Fecha DESC;
+    WHERE EstadoCorteId <> 3 -- opcional: excluir ANULADOS
+    ORDER BY Fecha DESC, HoraInicio DESC;
 END;
 
 -- 5) SP SELECT BY ID
 GO
 CREATE OR ALTER PROCEDURE spSelectCorteCajaById
-@CorteId INT
+    @CorteId INT
 AS
 BEGIN
     SELECT
@@ -88,7 +103,28 @@ BEGIN
         ObservacionInicial,
         ObservacionFinal,
         UsuarioAperturaId,
-        UsuarioCierreId
+        UsuarioCierreId,
+        EstadoCorteId
     FROM CorteCaja
     WHERE CorteId = @CorteId;
+END;
+
+GO
+CREATE OR ALTER PROCEDURE spGetCorteCajaActivo
+AS
+BEGIN
+    SELECT TOP 1
+        CorteId,
+        Fecha,
+        HoraInicio,
+        HoraEntrega,
+        MontoInicial,
+        MontoTotal,
+        ObservacionInicial,
+        ObservacionFinal,
+        UsuarioAperturaId,
+        UsuarioCierreId,
+        EstadoCorteId
+    FROM CorteCaja
+    WHERE EstadoCorteId = 1;
 END;

@@ -83,3 +83,18 @@ BEGIN
     FROM Tarjeta
     WHERE TarjetaId = @TarjetaId;
 END;
+
+-- SP SELECT TARJETA BY CODIGO
+CREATE OR ALTER PROCEDURE spSelectTarjetaByCodigo
+    @Codigo VARCHAR(50)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT 
+        TarjetaId,
+        Codigo,
+        EstadoTarjetaId
+    FROM Tarjeta
+    WHERE Codigo = @Codigo;
+END

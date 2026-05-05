@@ -6,16 +6,22 @@ CREATE OR ALTER PROCEDURE spInsertTicket
     @Fecha DATE,
     @HoraEntrada TIME,
     @TarjetaId INT,
+    @CorteId INT,
     @UsuarioId INT,
     @EstadoTicketId INT,
     @EstadoPermanenciaId INT,
-    @MultaId INT = NULL
+    @TipoVehiculoId INT,
+    @PrecioAplicado DECIMAL(10,2),
+    @MultaId INT = NULL,
+    @VehiculoId INT = NULL
 AS
 BEGIN
     INSERT INTO Ticket
-        (Fecha, HoraEntrada, TarjetaId, UsuarioId, EstadoTicketId, EstadoPermanenciaId, MultaId)
+        (Fecha, HoraEntrada, TarjetaId, CorteId, UsuarioId, EstadoTicketId,
+         EstadoPermanenciaId, TipoVehiculoId, PrecioAplicado, MultaId, VehiculoId)
     VALUES 
-        (@Fecha, @HoraEntrada, @TarjetaId, @UsuarioId, @EstadoTicketId, @EstadoPermanenciaId, @MultaId);
+        (@Fecha, @HoraEntrada, @TarjetaId, @CorteId, @UsuarioId, @EstadoTicketId,
+         @EstadoPermanenciaId, @TipoVehiculoId, @PrecioAplicado, @MultaId, @VehiculoId);
 
     PRINT 'Registro insertado correctamente';
 END;
@@ -66,10 +72,13 @@ BEGIN
         Total,
         TarjetaId,
         CorteId,
-        MultaId,
         UsuarioId,
         EstadoTicketId,
-        EstadoPermanenciaId
+        EstadoPermanenciaId,
+        TipoVehiculoId,
+        PrecioAplicado,
+        MultaId,
+        VehiculoId
     FROM Ticket
     ORDER BY Fecha DESC;
 END;
@@ -88,10 +97,41 @@ BEGIN
         Total,
         TarjetaId,
         CorteId,
-        MultaId,
         UsuarioId,
         EstadoTicketId,
-        EstadoPermanenciaId
+        EstadoPermanenciaId,
+        TipoVehiculoId,
+        PrecioAplicado,
+        MultaId,
+        VehiculoId
     FROM Ticket
     WHERE TicketId = @TicketId;
+END;
+
+-- SP GET TICKET ACTIVO BY TARJETA
+GO
+CREATE OR ALTER PROCEDURE spGetTicketActivoByTarjeta
+    @TarjetaId INT
+AS
+BEGIN
+    SELECT TOP 1
+        TicketId,
+        Fecha,
+        HoraEntrada,
+        HoraSalida,
+        Total,
+        TarjetaId,
+        CorteId,
+        UsuarioId,
+        EstadoTicketId,
+        EstadoPermanenciaId,
+        TipoVehiculoId,
+        PrecioAplicado,
+        MultaId,
+        VehiculoId
+    FROM Ticket
+    WHERE TarjetaId = @TarjetaId
+      AND HoraSalida IS NULL
+      AND EstadoTicketId = 1
+    ORDER BY TicketId DESC;
 END;

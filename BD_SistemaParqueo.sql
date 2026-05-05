@@ -163,13 +163,18 @@ CREATE TABLE Ticket (
     CorteId INT NOT NULL,
     EstadoTicketId INT NOT NULL DEFAULT 1,
     UsuarioId INT NOT NULL,
-    MultaId INT NULL,
     EstadoPermanenciaId INT NOT NULL DEFAULT 1,
+    TipoVehiculoId INT NOT NULL, -- Para obtener el precio facilmente
+    PrecioAplicado DECIMAL(10,2) NOT NULL,
+    MultaId INT NULL,
+    VehiculoId INT NULL,
 
     FOREIGN KEY (TarjetaId) REFERENCES Tarjeta(TarjetaId),
     FOREIGN KEY (CorteId) REFERENCES CorteCaja(CorteId),
     FOREIGN KEY (EstadoTicketId) REFERENCES EstadoTicket(EstadoTicketId),
     FOREIGN KEY (UsuarioId) REFERENCES Usuario(UsuarioId),
     FOREIGN KEY (MultaId) REFERENCES MultaTicket(MultaId),
-    FOREIGN KEY (EstadoPermanenciaId) REFERENCES EstadoPermanencia(EstadoPermanenciaId)
+    FOREIGN KEY (EstadoPermanenciaId) REFERENCES EstadoPermanencia(EstadoPermanenciaId),
+    FOREIGN KEY (TipoVehiculoId) REFERENCES TipoVehiculo(TipoVehiculoId),
+    FOREIGN KEY (VehiculoId) REFERENCES Vehiculo(VehiculoId)
 );

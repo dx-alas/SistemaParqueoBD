@@ -2,7 +2,7 @@ CREATE DATABASE SistemaParqueoUnab;
 GO
 USE SistemaParqueoUnab;
 GO
-
+-- Prueba
 -- TABLAS NECESARIAS PARA PROBAR LOGIN
 CREATE TABLE EstadoUsuario (
     EstadoUsuarioId INT PRIMARY KEY IDENTITY,

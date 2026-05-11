@@ -5,7 +5,7 @@ GO
 CREATE OR ALTER PROCEDURE spInsertEmpleado
     @Nombre VARCHAR(50),
     @Apellido VARCHAR(50),
-    @DUI VARCHAR(9),
+    @DUI VARCHAR(10),
     @Correo VARCHAR(50),
     @Telefono VARCHAR(15),
     @Direccion VARCHAR(255),
@@ -31,7 +31,7 @@ CREATE OR ALTER PROCEDURE spUpdateEmpleado
     @EmpleadoId INT,
     @Nombre VARCHAR(50),
     @Apellido VARCHAR(50),
-    @DUI VARCHAR(9),
+    @DUI VARCHAR(10),
     @Correo VARCHAR(50),
     @Telefono VARCHAR(15),
     @Direccion VARCHAR(255),
@@ -86,7 +86,7 @@ BEGIN
         Direccion,
         EstadoEmpleadoId
     FROM Empleado
-    ORDER BY Nombre ASC;
+    ORDER BY EmpleadoId DESC
 END;
 
 -- 5) SP SELECT BY

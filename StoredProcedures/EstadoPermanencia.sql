@@ -60,7 +60,8 @@ BEGIN
     SELECT
         EstadoPermanenciaId,
         Nombre
-    FROM EstadoPermanencia;
+    FROM EstadoPermanencia
+    ORDER BY EstadoPermanenciaId DESC
 END;
 
 -- 5) SP SELECT BY

@@ -96,7 +96,7 @@ BEGIN
         RolId,
         EstadoUsuarioId
     FROM Usuario
-    ORDER BY Nombre ASC;
+    ORDER BY UsuarioId DESC;
 END;
 
 -- 5) SP SELECT BY
@@ -119,11 +119,12 @@ END;
 -- SP LOGIN
 GO
 CREATE OR ALTER PROCEDURE spUsuarioLogin
-    @Nombre VARCHAR(50),
-    @Clave VARCHAR(255)
+(
+    @Nombre VARCHAR(50)
+)
 AS
 BEGIN
-    SELECT 
+    SELECT
         UsuarioId,
         Nombre,
         Clave,
@@ -132,7 +133,23 @@ BEGIN
         EstadoUsuarioId
     FROM Usuario
     WHERE Nombre = @Nombre
-      AND Clave = @Clave
-      AND EstadoUsuarioId = 1;
-END;
-GO
+END
+
+-- GO
+-- CREATE OR ALTER PROCEDURE spUsuarioLogin
+--     @Nombre VARCHAR(50),
+--     @Clave VARCHAR(255)
+-- AS
+-- BEGIN
+--     SELECT 
+--         UsuarioId,
+--         Nombre,
+--         Clave,
+--         EmpleadoId,
+--         RolId,
+--         EstadoUsuarioId
+--     FROM Usuario
+--     WHERE Nombre = @Nombre
+--       AND Clave = @Clave
+--       AND EstadoUsuarioId = 1;
+-- END;

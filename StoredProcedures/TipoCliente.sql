@@ -60,7 +60,7 @@ BEGIN
         TipoClienteId,
         Nombre
     FROM TipoCliente
-    ORDER BY Nombre ASC;
+    ORDER BY TipoClienteId DESC
 END;
 
 -- 5) SP SELECT BY

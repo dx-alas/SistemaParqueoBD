@@ -60,7 +60,7 @@ BEGIN
         EstadoTarjetaId,
         Nombre
     FROM EstadoTarjeta
-    ORDER BY Nombre ASC;
+    ORDER BY EstadoTarjetaId DESC;
 END;
 
 -- 5) SP SELECT BY

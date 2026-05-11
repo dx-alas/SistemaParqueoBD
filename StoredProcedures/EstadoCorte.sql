@@ -66,7 +66,7 @@ BEGIN
         EstadoCorteId,
         Nombre
     FROM EstadoCorte
-    ORDER BY Nombre ASC;
+    ORDER BY EstadoCorteId DESC;
 END;
 
 -- 5) SP SELECT BY ID

@@ -60,7 +60,7 @@ BEGIN
         RolId,
         Nombre
     FROM Rol
-    ORDER BY Nombre ASC;
+    ORDER BY RolId DESC;
 END;
 
 -- 5) SP SELECT BY

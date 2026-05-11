@@ -60,7 +60,7 @@ BEGIN
         EstadoEmpleadoId,
         Nombre
     FROM EstadoEmpleado
-    ORDER BY Nombre ASC;
+    ORDER BY EstadoEmpleadoId DESC;
 END;
 
 -- 5) SP SELECT BY

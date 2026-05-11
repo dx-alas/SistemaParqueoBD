@@ -7,7 +7,7 @@ CREATE OR ALTER PROCEDURE spInsertCliente
     @Apellido VARCHAR(50),
     @Telefono VARCHAR(20),
     @TipoDocumento VARCHAR(20),
-    @DUI VARCHAR(9),
+    @DUI VARCHAR(10),
     @CarnetExtranjero VARCHAR(20),
     @TarjetaId INT,
     @TipoClienteId INT,
@@ -35,7 +35,7 @@ CREATE OR ALTER PROCEDURE spUpdateCliente
     @Apellido VARCHAR(50),
     @Telefono VARCHAR(20),
     @TipoDocumento VARCHAR(20),
-    @DUI VARCHAR(9),
+    @DUI VARCHAR(10),
     @CarnetExtranjero VARCHAR(20),
     @TarjetaId INT,
     @TipoClienteId INT,
@@ -94,7 +94,7 @@ BEGIN
         TipoClienteId,
         EstadoClienteId
     FROM Cliente
-    ORDER BY Nombre ASC;
+    ORDER BY ClienteId DESC
 END;
 
 -- 5) SP SELECT BY

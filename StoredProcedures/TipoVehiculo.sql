@@ -65,7 +65,7 @@ BEGIN
         Nombre,
         Precio
     FROM TipoVehiculo
-    ORDER BY Nombre ASC;
+    ORDER BY TipoVehiculoId DESC;
 END;
 
 -- 5) SP SELECT BY

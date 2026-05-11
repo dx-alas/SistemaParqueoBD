@@ -61,7 +61,7 @@ BEGIN
         EstadoVehiculoId,
         Nombre
     FROM EstadoVehiculo
-    ORDER BY Nombre ASC;
+    ORDER BY EstadoVehiculoId DESC;
 END;
 
 -- 5) SP SELECT BY

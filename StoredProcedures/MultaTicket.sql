@@ -50,7 +50,8 @@ BEGIN
         MultaId,
         Concepto,
         Precio
-    FROM MultaTicket;
+    FROM MultaTicket
+    ORDER BY MultaId DESC
 END;
 
 -- 5) SP SELECT BY

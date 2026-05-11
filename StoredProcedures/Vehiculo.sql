@@ -80,7 +80,7 @@ BEGIN
         TipoVehiculoId,
         EstadoVehiculoId
     FROM Vehiculo
-    ORDER BY Placa ASC;
+    ORDER BY VehiculoId DESC;
 END;
 
 -- 5) SP SELECT BY

@@ -67,7 +67,7 @@ BEGIN
         Codigo,
         EstadoTarjetaId
     FROM Tarjeta
-    ORDER BY Codigo ASC;
+    ORDER BY TarjetaId DESC;
 END;
 
 -- 5) SP SELECT BY

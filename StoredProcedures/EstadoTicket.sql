@@ -60,7 +60,7 @@ BEGIN
         EstadoTicketId,
         Nombre
     FROM EstadoTicket
-    ORDER BY Nombre ASC;
+    ORDER BY EstadoTicketId DESC;
 END;
 
 -- 5) SP SELECT BY

@@ -61,7 +61,7 @@ BEGIN
         EstadoClienteId,
         Nombre
     FROM EstadoCliente
-    ORDER BY Nombre ASC;
+    ORDER BY EstadoClienteId DESC;
 END;
 
 -- 5) SP SELECT BY

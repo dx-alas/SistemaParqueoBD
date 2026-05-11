@@ -46,7 +46,8 @@ BEGIN
     SELECT
         ParqueoId,
         CapacidadTotal
-    FROM Parqueo;
+    FROM Parqueo
+    ORDER BY ParqueoId DESC
 END;
 
 -- 5) SP SELECT BY
